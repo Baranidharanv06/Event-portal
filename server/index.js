@@ -32,4 +32,3 @@ app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);
 const PORT = 5000;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
