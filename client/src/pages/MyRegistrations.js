@@ -71,12 +71,20 @@ function MyRegistrations() {
                     <strong>Status:</strong>{' '}
                     <span className="badge bg-success">{reg.status}</span>
                   </p>
-                  <button
-                    className="btn btn-danger w-100"
-                    onClick={() => handleCancel(reg._id)}
-                  >
-                    Cancel Registration
-                  </button>
+                 <div className="d-flex gap-2">
+  <button
+    className="btn btn-danger w-100"
+    onClick={() => handleCancel(reg._id)}
+  >
+    Cancel
+  </button>
+  <button
+    className="btn btn-outline-dark w-100"
+    onClick={() => navigate(`/feedback/${reg.event?._id}`)}
+  >
+    Feedback
+  </button>
+</div>
                 </div>
               </div>
             </div>

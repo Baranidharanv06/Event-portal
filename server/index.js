@@ -27,7 +27,9 @@ mongoose.connect('mongodb://localhost:27017/eventportal')
 const authRoutes = require('./routes/auth');
 const eventRoutes = require('./routes/events');
 const registrationRoutes = require('./routes/registrations');
+const feedbackRoutes = require('./routes/feedback');
 
+app.use('/api/feedback', feedbackRoutes);
 app.use('/api/auth', authRoutes);
 app.use('/api/events', eventRoutes);
 app.use('/api/registrations', registrationRoutes);

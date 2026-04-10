@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-function Signup() {
+function Signup({ setUser }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
@@ -13,7 +13,6 @@ function Signup() {
     e.preventDefault();
     setError('');
 
-    // Form validation
     if (!name || !email || !password || !confirm) {
       setError('All fields are required');
       return;
@@ -40,6 +39,7 @@ function Signup() {
       });
       const data = await res.json();
       if (res.ok) {
+        setUser(data.user);
         navigate('/events');
       } else {
         setError(data.message);
@@ -99,7 +99,7 @@ function Signup() {
             <button type="submit" className="btn btn-dark w-100">Sign Up</button>
           </form>
           <p className="text-center mt-3">
-            Already have an account? <Link to="/login">Login</Link>
+            Already have an account? <Link to="/login">Signup</Link>
           </p>
         </div>
       </div>

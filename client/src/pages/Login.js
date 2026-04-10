@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 
-function Login() {
+function Login({ setUser }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
@@ -11,7 +11,6 @@ function Login() {
     e.preventDefault();
     setError('');
 
-    // Form validation
     if (!email || !password) {
       setError('All fields are required');
       return;
@@ -30,6 +29,7 @@ function Login() {
       });
       const data = await res.json();
       if (res.ok) {
+        setUser(data.user);
         navigate('/events');
       } else {
         setError(data.message);
