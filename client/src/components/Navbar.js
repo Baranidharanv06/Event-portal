@@ -21,24 +21,39 @@ function Navbar({ user, setUser }) {
           <span className="navbar-toggler-icon"></span>
         </button>
         <div className="collapse navbar-collapse" id="navMenu">
-          <ul className="navbar-nav ms-auto">
+          <ul className="navbar-nav ms-auto align-items-lg-center">
             <li className="nav-item">
               <Link className="nav-link" to="/events">Events</Link>
             </li>
             {user ? (
               <>
-  {user.role !== 'admin' && (
-  <li className="nav-item">
-    <Link className="nav-link" to="/my-registrations">My Registrations</Link>
-  </li>
-)}
+                {user.role === 'student' && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/my-registrations">My Registrations</Link>
+                  </li>
+                )}
+                {user.role === 'organizer' && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/organizer">My Dashboard</Link>
+                  </li>
+                )}
+                {user.role === 'coordinator' && (
+                  <li className="nav-item">
+                    <Link className="nav-link" to="/coordinator">My Dashboard</Link>
+                  </li>
+                )}
                 {user.role === 'admin' && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin">Admin</Link>
                   </li>
                 )}
                 <li className="nav-item">
-                  <button className="btn btn-outline-light btn-sm mt-1" onClick={handleLogout}>Logout</button>
+                  <Link className="nav-link" to="/profile">Profile</Link>
+                </li>
+                <li className="nav-item ms-2">
+                  <button className="btn btn-outline-light btn-sm" onClick={handleLogout}>
+                    Logout ({user.name})
+                  </button>
                 </li>
               </>
             ) : (

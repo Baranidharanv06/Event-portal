@@ -30,10 +30,11 @@ function Admin() {
       setError('All fields are required');
       return;
     }
-    if (slots < 1) {
-      setError('Slots must be at least 1');
-      return;
-    }
+    if (title.length < 3) { setError('Title must be at least 3 characters'); return; }
+    if (Number(slots) < 1 || Number(slots) > 10000) { setError('Slots must be between 1 and 10000'); return; }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (new Date(date) < today) { setError('Event date cannot be in the past'); return; }
 
     try {
       const res = await fetch('http://localhost:5001/api/events', {

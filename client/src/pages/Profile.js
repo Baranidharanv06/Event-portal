@@ -32,29 +32,31 @@ function Profile({ user, setUser }) {
     }
   };
 
-  const handleUpdateProfile = async (e) => {
-    e.preventDefault();
-    setError('');
-    setMessage('');
-    if (!name) { setError('Name is required'); return; }
-    try {
-      const res = await fetch('http://localhost:5001/api/auth/profile', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ name, department, phone })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Profile updated successfully');
-        setUser({ ...user, name: data.user.name });
-      } else {
-        setError(data.message);
-      }
-    } catch (err) {
-      setError('Server error. Try again.');
+const handleUpdateProfile = async (e) => {
+  e.preventDefault();
+  setError('');
+  setMessage('');
+  if (!name) { setError('Name is required'); return; }
+  if (name.length < 2) { setError('Name must be at least 2 characters'); return; }
+  if (phone && !/^\d{10}$/.test(phone)) { setError('Phone must be exactly 10 digits'); return; }
+  try {
+    const res = await fetch('http://localhost:5001/api/auth/profile', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ name, department, phone })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setMessage('Profile updated successfully');
+      setUser({ ...user, name: data.user.name });
+    } else {
+      setError(data.message);
     }
-  };
+  } catch (err) {
+    setError('Server error. Try again.');
+  }
+};
 
   const handleChangePassword = async (e) => {
     e.preventDefault();

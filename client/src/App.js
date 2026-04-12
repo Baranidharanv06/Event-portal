@@ -16,15 +16,20 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetch('http://localhost:5001/api/auth/me', { credentials: 'include' })
-      .then(res => res.json())
-      .then(data => {
-        if (data.userId) setUser({ name: data.name, role: data.role });
-        setLoading(false);
-      })
-      .catch(() => setLoading(false));
-  }, []);
+ useEffect(() => {
+  fetch('http://localhost:5001/api/auth/me', { credentials: 'include' })
+    .then(res => res.json())
+    .then(data => {
+      if (data.userId) setUser({ 
+        name: data.name, 
+        role: data.role,
+        department: data.department,
+        phone: data.phone
+      });
+      setLoading(false);
+    })
+    .catch(() => setLoading(false));
+}, []);
 
   if (loading) return <div className="text-center mt-5"><div className="spinner-border" /></div>;
 

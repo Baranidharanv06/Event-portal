@@ -10,37 +10,29 @@ function Feedback() {
   const [message, setMessage] = useState('');
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setError('');
-
-    if (!comment || !rating) {
-      setError('All fields are required');
-      return;
+  e.preventDefault();
+  setError('');
+  if (!comment || !rating) { setError('All fields are required'); return; }
+  if (rating < 1 || rating > 5) { setError('Rating must be between 1 and 5'); return; }
+  if (comment.length < 10) { setError('Comment must be at least 10 characters'); return; }
+  try {
+    const res = await fetch('http://localhost:5001/api/feedback', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      credentials: 'include',
+      body: JSON.stringify({ eventId, comment, rating: Number(rating) })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      setMessage('Feedback submitted successfully!');
+      setTimeout(() => navigate('/events'), 2000);
+    } else {
+      setError(data.message);
     }
-    if (rating < 1 || rating > 5) {
-      setError('Rating must be between 1 and 5');
-      return;
-    }
-
-    try {
-      const res = await fetch('http://localhost:5001/api/feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
-        body: JSON.stringify({ eventId, comment, rating: Number(rating) })
-      });
-      const data = await res.json();
-      if (res.ok) {
-        setMessage('Feedback submitted successfully!');
-        setTimeout(() => navigate('/events'), 2000);
-      } else {
-        setError(data.message);
-      }
-    } catch (err) {
-      setError('Server error. Try again.');
-    }
-  };
-
+  } catch (err) {
+    setError('Server error. Try again.');
+  }
+};
   return (
     <div className="row justify-content-center">
       <div className="col-md-6">

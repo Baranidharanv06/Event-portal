@@ -70,13 +70,19 @@ function OrganizerDashboard() {
     } catch (err) {}
   };
 
-  const handleCreate = async (e) => {
+const handleCreate = async (e) => {
     e.preventDefault();
     setError('');
     if (!title || !date || !deadline || !venue || !slots) {
       setError('All fields are required');
       return;
     }
+    if (title.length < 3) { setError('Title must be at least 3 characters'); return; }
+    if (Number(slots) < 1 || Number(slots) > 10000) { setError('Slots must be between 1 and 10000'); return; }
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    if (new Date(date) < today) { setError('Event date cannot be in the past'); return; }
+    if (new Date(deadline) < today) { setError('Deadline cannot be in the past'); return; }
     if (new Date(deadline) >= new Date(date)) {
       setError('Deadline must be before event date');
       return;

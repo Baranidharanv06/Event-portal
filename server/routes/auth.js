@@ -60,7 +60,15 @@ router.get('/me', async (req, res) => {
   if (!req.session.userId) return res.status(401).json({ message: 'Not logged in' });
   try {
     const user = await User.findById(req.session.userId).select('-password');
-    res.json({ userId: req.session.userId, role: user.role, name: user.name });
+    if (!user) return res.status(401).json({ message: 'Not logged in' });
+    req.session.role = user.role;
+    res.json({ 
+      userId: user._id, 
+      role: user.role, 
+      name: user.name,
+      department: user.department,
+      phone: user.phone
+    });
   } catch (err) {
     res.status(500).json({ message: 'Server error' });
   }
