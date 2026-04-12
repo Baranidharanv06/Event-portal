@@ -4,7 +4,14 @@ const userSchema = new mongoose.Schema({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true },
   password: { type: String, required: true },
-  role: { type: String, default: 'student' }
+  role: { 
+    type: String, 
+    enum: ['guest', 'student', 'organizer', 'coordinator', 'admin'],
+    default: 'student' 
+  },
+  phone: { type: String },
+  department: { type: String },
+  isActive: { type: Boolean, default: true }
 }, { timestamps: true });
 
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('User', userSchema); 

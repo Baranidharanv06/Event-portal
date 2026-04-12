@@ -1,20 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
-function Navbar() {
-  const [user, setUser] = useState(null);
+function Navbar({ user, setUser }) {
   const navigate = useNavigate();
-
-  useEffect(() => {
-    fetch('http://localhost:5001/api/auth/me', {
-      credentials: 'include'
-    })
-      .then(res => res.json())
-      .then(data => {
-        if (data.userId) setUser(data);
-      })
-      .catch(() => {});
-  }, []);
 
   const handleLogout = async () => {
     await fetch('http://localhost:5001/api/auth/logout', {
@@ -39,9 +27,11 @@ function Navbar() {
             </li>
             {user ? (
               <>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/my-registrations">My Registrations</Link>
-                </li>
+  {user.role !== 'admin' && (
+  <li className="nav-item">
+    <Link className="nav-link" to="/my-registrations">My Registrations</Link>
+  </li>
+)}
                 {user.role === 'admin' && (
                   <li className="nav-item">
                     <Link className="nav-link" to="/admin">Admin</Link>
